@@ -20,6 +20,12 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- Add Firebase Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -355,15 +361,14 @@
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <!-- Water Level -->
+                        <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Water
-                                                Level
-                                            </div>
+                                                Level</div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
@@ -387,41 +392,41 @@
                         </div>
 
                         <script>
-                            // Your web app's Firebase configuration
+                            // Firebase configuration (replace with your actual credentials)
+                            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
                             const firebaseConfig = {
                                 apiKey: "AIzaSyCdsOVWqG81uosME5krgcPciXFklREMx1w",
                                 authDomain: "chilitech-ytcraft.firebaseapp.com",
                                 databaseURL: "https://chilitech-ytcraft-default-rtdb.firebaseio.com",
                                 projectId: "chilitech-ytcraft",
                                 storageBucket: "chilitech-ytcraft.appspot.com",
-                                messagingSenderId: "77890044323"
+                                messagingSenderId: "77890044323",
+                                appId: "1:77890044323:web:eafdd464e1ec579e761a16",
+                                measurementId: "G-C31WYN2QET"
                             };
 
                             // Initialize Firebase
                             firebase.initializeApp(firebaseConfig);
 
-                            // Reference to your Firebase Realtime Database
+                            // Get a reference to the database
                             const database = firebase.database();
 
-                            // Function to fetch and display water level data
-                            function fetchWaterLevel() {
-                                const waterLevelRef = database.ref('level'); // Update with your actual path
+                            // Reference to the 'level' node in the database
+                            const waterLevelRef = database.ref('level');
 
-                                waterLevelRef.on('value', (snapshot) => {
-                                    const data = snapshot.val();
-                                    const waterLevel = data; // Assuming data is a percentage value
+                            // Fetch water level data from Firebase
+                            waterLevelRef.on('value', (snapshot) => {
+                                const waterLevel = snapshot.val();
 
-                                    // Update the HTML elements with the fetched value
-                                    document.getElementById('water-level').innerText = `${waterLevel}%`;
-                                    document.getElementById('water-level-bar').style.width = `${waterLevel}%`;
-                                    document.getElementById('water-level-bar').setAttribute('aria-valuenow', waterLevel);
-                                }, (error) => {
-                                    console.error('Error fetching water level data:', error);
-                                });
+                                // Update HTML elements with the water level data
+                                updateWaterLevelUI(waterLevel);
+                            });
+
+                            function updateWaterLevelUI(waterLevel) {
+                                document.getElementById('water-level').textContent = `${waterLevel}%`;
+                                document.getElementById('water-level-bar').style.width = `${waterLevel}%`;
+                                document.getElementById('water-level-bar').setAttribute('aria-valuenow', waterLevel);
                             }
-
-                            // Fetch data on page load
-                            window.onload = fetchWaterLevel;
                         </script>
 
                         <!-- Pending Requests Card Example -->
